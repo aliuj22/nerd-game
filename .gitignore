@@ -2,4 +2,8 @@
 /dist
 /node_modules
 /package-lock.json
-/.DS_Store
+**/.DS_Store
+.idea
+thumbs.db
+*.css.map
+.vscode/*
