@@ -6,7 +6,7 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("bg", "./assets/bg.png");
+    this.load.image("bg", "./assets/big-bg.png");
   }
 
   create() {
