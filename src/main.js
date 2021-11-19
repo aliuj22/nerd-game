@@ -16,6 +16,9 @@ const config = {
     },
   },
   scene: [HelloWorldScene],
+  render: {
+    pixelArt: true,
+  },
 };
 
 //export default new Phaser.Game(config);
