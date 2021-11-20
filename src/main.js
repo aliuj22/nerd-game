@@ -1,26 +1,25 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
-import TitleScreen from './scenes/TitleScreen';
+import TitleScreen from "./scenes/TitleScreen";
 
-import HelloWorldScene from './scenes/HelloWorldScene';
+import HelloWorldScene from "./scenes/HelloWorldScene";
 
 const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
   physics: {
-    default: 'arcade',
+    default: "arcade",
     arcade: {
       gravity: { y: 0 },
       debug: true,
     },
   },
-  scene: [HelloWorldScene],
+  scene: [TitleScreen],
 };
 
 //export default new Phaser.Game(config);
 
 const game = new Phaser.Game(config);
 
-game.scene.add('titlescreen', TitleScreen);
-game.scene.start('titlescreen');
+game.scene.add("titlescreen", HelloWorldScene);
