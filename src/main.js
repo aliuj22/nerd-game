@@ -4,6 +4,8 @@ import TitleScreen from "./scenes/TitleScreen";
 
 import HelloWorldScene from "./scenes/HelloWorldScene";
 
+import GameOverScene from "./scenes/game-over";
+
 const config = {
   type: Phaser.AUTO,
   width: 800,
@@ -23,3 +25,4 @@ const config = {
 const game = new Phaser.Game(config);
 
 game.scene.add("titlescreen", HelloWorldScene);
+game.scene.add("over", GameOverScene);

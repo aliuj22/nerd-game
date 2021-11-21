@@ -7,6 +7,10 @@ import HelloWorldScene from "../scenes/HelloWorldScene";
 // import HelloWorldScene from "./HelloWorldScene";
 
 export default class TitleScreen extends Phaser.Scene {
+  constructor() {
+    super("title-screen");
+  }
+
   preload() {
     const fonts = new WebFontFile(this.load, "Press Start 2P");
     this.load.addFile(fonts);
