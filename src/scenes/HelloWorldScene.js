@@ -1,15 +1,15 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
-    super("hello-world");
+    super('hello-world');
   }
 
   preload() {
-    this.load.image("bg", "./assets/big-bg.png");
+    this.load.image('bg', './assets/big-bg.png');
   }
 
   create() {
-    this.add.image(400, 300, "bg");
+    this.add.image(400, 300, 'bg');
   }
 }
