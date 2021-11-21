@@ -11,7 +11,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 0 },
+      gravity: false,
       debug: true,
     },
   },
@@ -20,7 +20,9 @@ const config = {
 
 //export default new Phaser.Game(config);
 
-const game = new Phaser.Game(config);
+  const game = new Phaser.Game(config);
+
+
 
 game.scene.add('titlescreen', TitleScreen);
 game.scene.start('titlescreen');
