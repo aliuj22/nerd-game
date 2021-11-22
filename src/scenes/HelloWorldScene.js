@@ -23,6 +23,10 @@ export default class HelloWorldScene extends Phaser.Scene {
       `${Keys[this.characterIndex]}`,
       `./assets/${Keys[this.characterIndex]}128.png`
     );
+    this.load.spritesheet("invader1", "./assets/c.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
   }
 
   create() {
