@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import WebFontFile from './WebFontFile';
 
-import HelloWorldScene from '../scenes/HelloWorldScene';
+//import HelloWorldScene from '../scenes/HelloWorldScene';
 
 const Alex_key = 'Alex';
 const Julia_key = 'Julia';
@@ -15,6 +15,9 @@ let characterSelector;
 let selectedIndex;
 
 export default class TitleScreen extends Phaser.Scene {
+  constructor() {
+    super('title-screen');
+  }
   preload() {
     const fonts = new WebFontFile(this.load, 'Press Start 2P');
     this.load.addFile(fonts);
