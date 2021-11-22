@@ -1,23 +1,23 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
-import TitleScreen from "./scenes/TitleScreen";
+import TitleScreen from './scenes/TitleScreen';
 
-import HelloWorldScene from "./scenes/HelloWorldScene";
+import HelloWorldScene from './scenes/HelloWorldScene';
 
-import GameOverScene from "./scenes/game-over";
+import GameOverScene from './scenes/game-over.js';
 
 const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       gravity: { y: 0 },
       debug: true,
     },
   },
-  scene: [TitleScreen, HelloWorldScene],
+  scene: [TitleScreen, HelloWorldScene, GameOverScene],
   render: {
     pixelArt: true,
   },
@@ -28,5 +28,5 @@ const config = {
 const game = new Phaser.Game(config);
 
 //game.scene.add('titlescreen', TitleScreen);
-game.scene.start("titlescreen");
-game.scene.add("over", GameOverScene);
+game.scene.start('title-screen');
+//game.scene.add('over', GameOverScene);
