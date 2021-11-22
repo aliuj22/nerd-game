@@ -1,7 +1,6 @@
 let enemy1, enemy2, enemy3, enemy4, startGame;
 
 import Phaser from "phaser";
-
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
     super("hello-world");
@@ -9,6 +8,11 @@ export default class HelloWorldScene extends Phaser.Scene {
 
   preload() {
     this.load.image("bg", "./assets/big-bg.png");
+
+    // this.load.spritesheet('enemy1', '/assets/python.png');
+
+
+
     this.load.spritesheet("enemy1", "./assets/java.png", {
       frameWidth: 70,
       frameHeight: 70,
@@ -30,6 +34,7 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   create() {
+    
     this.add.image(400, 300, "bg");
 
     enemy1 = this.physics.add.group({
@@ -60,10 +65,12 @@ export default class HelloWorldScene extends Phaser.Scene {
       setXY: { x: 50, y: 180, stepX: 70 },
     });
 
+    
+
   }
 }
 
-//    update (;) {
+//    function update () {
 //      console.log(update)
 //   startGame = true;
 // };

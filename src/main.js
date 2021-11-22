@@ -1,3 +1,4 @@
+
 import Phaser from 'phaser';
 
 import TitleScreen from './scenes/TitleScreen';
@@ -12,15 +13,16 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: false,
-      debug: true,
+      // debug: true,
     },
   },
-  scene: [HelloWorldScene],
+  scene: [HelloWorldScene, TitleScreen],
 };
 
-//export default new Phaser.Game(config);
 
-  const game = new Phaser.Game(config);
+
+const game = new Phaser.Game(config);
+
 
 
 
