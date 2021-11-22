@@ -70,5 +70,5 @@ export default class HelloWorldScene extends Phaser.Scene {
     explosion.play("explosion");
   }
 
-  //use .destroy to delete enemy after being shot + add above animation
+  //todo: use .destroy to delete enemy after being shot + add above animation
 }
