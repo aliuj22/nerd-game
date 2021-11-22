@@ -12,12 +12,14 @@ const selector_key = 'selector';
 let characters = [];
 let selectedCharacterIndex = 0;
 let characterSelector;
+let selectedIndex;
 
 export default class TitleScreen extends Phaser.Scene {
   preload() {
     const fonts = new WebFontFile(this.load, 'Press Start 2P');
     this.load.addFile(fonts);
 
+    this.load.image('bg', './assets/big-bg.png');
     this.load.image('Alex_key', './assets/Alex128.png');
     this.load.image('Julia_key', './assets/Julia128.png');
     this.load.image('Redbull_key', './assets/redbull128.png');
@@ -25,6 +27,7 @@ export default class TitleScreen extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(400, 300, 'bg');
     const title = this.add.text(400, 100, 'Nerd Invaders', {
       fontSize: '38px',
       fontFamily: '"Press Start 2P"',
@@ -53,7 +56,7 @@ export default class TitleScreen extends Phaser.Scene {
     console.log('characters are', characters);
 
     this.add
-      .text(400, 500, '⬅️ ➡️to select the character', {
+      .text(400, 500, '⬅️ ➡️ to select the character', {
         fontSize: '20px',
         fontFamily: '"Press Start 2P"',
       })
@@ -68,14 +71,19 @@ export default class TitleScreen extends Phaser.Scene {
 
     this.input.keyboard.once('keydown-SPACE', () => {
       console.log('space down');
-      this.scene.start('hello-world', HelloWorldScene);
+      // sending data to next page
+      this.scene.start('hello-world', {
+        characterIndex: selectedIndex,
+      });
     });
-
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.selectCharacter(0);
+    this.selectCharacter(1);
   }
 
+  // handleContinue() {
+  //   this.scene.start('hello-world', HelloWorldScene);
+  // }
   selectCharacter(index) {
     const currentCharacter = characters[selectedCharacterIndex];
 
@@ -88,13 +96,15 @@ export default class TitleScreen extends Phaser.Scene {
   }
 
   selectNextCharacter(change) {
-    let index = selectedCharacterIndex + change;
-    if (index >= characters.length) {
-      index = 0;
-    } else if (index < 0) {
-      index = characters.length - 1;
+    selectedIndex = selectedCharacterIndex + change;
+    if (selectedIndex >= characters.length) {
+      selectedIndex = 0;
+    } else if (selectedIndex < 0) {
+      selectedIndex = characters.length - 1;
     }
-    this.selectCharacter(index);
+    this.selectCharacter(selectedIndex);
+
+    console.log('index is', selectedIndex);
   }
 
   update() {

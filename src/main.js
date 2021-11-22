@@ -15,7 +15,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [HelloWorldScene],
+  scene: [TitleScreen, HelloWorldScene],
   render: {
     pixelArt: true,
   },
