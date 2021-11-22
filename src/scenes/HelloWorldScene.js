@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import TitleScreen from "./TitleScreen";
 
 const Keys = ["Julia", "Alex", "Redbull"];
+var explosion;
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -27,6 +28,11 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+
+    this.load.spritesheet("explosion", "./assets/explosion-2.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
   }
 
   create() {
@@ -48,5 +54,21 @@ export default class HelloWorldScene extends Phaser.Scene {
       repeat: 8,
       setXY: { x: 80, y: 100, stepX: 60 },
     });
+
+    this.anims.create({
+      key: "explosion",
+      frameRate: 5,
+      frames: this.anims.generateFrameNumbers("explosion", {
+        start: 0,
+        end: 8,
+      }),
+      repeat: 0,
+    });
+
+    explosion = this.add.sprite(640, 360, "explosion");
+
+    explosion.play("explosion");
   }
+
+  //use .destroy to delete enemy after being shot + add above animation
 }
