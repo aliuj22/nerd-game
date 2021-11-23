@@ -55,6 +55,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       setXY: { x: 80, y: 100, stepX: 60 },
     });
 
+    //animation for explosions
     this.anims.create({
       key: "explosion",
       frameRate: 5,
@@ -67,6 +68,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     explosion = this.add.sprite(640, 360, "explosion");
 
+    //this will be added to if statement when enemy is hit
     explosion.play("explosion");
   }
 
