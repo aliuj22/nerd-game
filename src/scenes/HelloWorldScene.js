@@ -20,9 +20,12 @@ preload() {
    }
 
   create() {
-    
+    // background image is being created here
      this.add.image(400, 300, "bg");
     //  spaceSound = this.sound.add('space', { volume: 0.2 });
+
+
+// enemy 1 is being created below
 
      this.physics.world.setBoundsCollision ()
          enemy = this.physics.add.group(); 
@@ -56,8 +59,7 @@ preload() {
           enemy.setVelocityX(100)        
          enemy.setOrigin(0.5, 0.5);
 
-
-        //  enemy2 is been created here
+ //  enemy2 is been created here
 
 
          this.physics.world.setBoundsCollision ()
@@ -70,7 +72,7 @@ preload() {
          invader.body.collideWorldBounds= true;
          invader.body.bounce.setTo(1, 1);
          invader.body.onWorldBounds = true;
-         invader.setImmovable(true);
+         invader.setImmovable (true);
 
         console.log(invader);
 
@@ -91,7 +93,7 @@ preload() {
           enemy2.setOrigin(0.5, 0.5);
 
 
-          // enemy3 is being created here
+ // enemy3 is being created here
     
           this.physics.world.setBoundsCollision ()
           enemy3 = this.physics.add.group(); 
@@ -103,7 +105,7 @@ preload() {
           invader.body.collideWorldBounds= true;
           invader.body.bounce.setTo(1, 1);
           invader.body.onWorldBounds = true;
-          invader.setImmovable(true);
+          invader.setImmovable (true);
  
          console.log(invader);
  
@@ -141,11 +143,11 @@ update (){
  }
 
  if(enemy2.x > this.physics.world.bounds.width){
-   enemy2.setVelocityX (-100);
+   enemy2.setVelocityX (100);
  }
 
  if(enemy3.x > this.physics.world.bounds.width){
-  enemy3.setVelocityX (-100);
+  enemy3.setVelocityX (100);
 }
  
 }
