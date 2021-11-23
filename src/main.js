@@ -1,4 +1,4 @@
-
+const game = {};
 import Phaser from 'phaser';
 
 import TitleScreen from './scenes/TitleScreen';
@@ -9,22 +9,21 @@ const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
-  physics: {
+   physics: {
     default: 'arcade',
-    arcade: {
-      gravity: false,
-      // debug: true,
-    },
+  //   arcade: {
+  //     gravity: false,
+  //     // debug: true,
+  //  },
   },
-  scene: [HelloWorldScene, TitleScreen],
+  scene: [HelloWorldScene, TitleScreen]
 };
 
-
-
-const game = new Phaser.Game(config);
-
+new Phaser.Game(config);
 
 
 
-game.scene.add('titlescreen', TitleScreen);
-game.scene.start('titlescreen');
+
+
+
+
