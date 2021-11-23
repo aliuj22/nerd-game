@@ -7,3 +7,4 @@
 thumbs.db
 *.css.map
 .vscode/*
+public/.DS_Store
