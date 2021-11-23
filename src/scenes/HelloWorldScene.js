@@ -3,9 +3,10 @@ import Phaser from "phaser";
 import TitleScreen from "./TitleScreen";
 
 const Keys = ["Julia", "Alex", "Redbull"];
-var explosion;
-var sky;
-
+var explosion, sky;
+var scoreText;
+var score = 0;
+var scoreString = "";
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
     super("hello-world");
@@ -20,16 +21,22 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   preload() {
+    //background
     this.load.image("bg", "./assets/big-bg.png");
+
+    //loading players character
     this.load.image(
       `${Keys[this.characterIndex]}`,
       `./assets/${Keys[this.characterIndex]}128.png`
     );
+
+    //todo: replace with alexs enemies
     this.load.spritesheet("invader1", "./assets/c.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
 
+    //loading explosion animation
     this.load.spritesheet("explosion", "./assets/explosion-2.png", {
       frameWidth: 64,
       frameHeight: 64,
@@ -38,13 +45,17 @@ export default class HelloWorldScene extends Phaser.Scene {
 
   create() {
     console.log(Keys[this.characterIndex]);
+
+    //adding background(position, width, height, key)
     sky = this.add.tileSprite(500, 100, 1024, 1024, "bg");
 
+    //adding chosen player
     const player = this.add.image(100, 100, Keys[this.characterIndex]);
     player.x = 400;
     player.y = 500;
     console.log("init is ", this.data);
-    this.load.image("bg", "./assets/big-bg.png");
+
+    //todo: replace with alexs enemies
     this.load.spritesheet("invader1", "./assets/c.png", {
       frameWidth: 64,
       frameHeight: 64,
@@ -67,15 +78,39 @@ export default class HelloWorldScene extends Phaser.Scene {
       repeat: 0,
     });
 
-    explosion = this.add.sprite(640, 360, "explosion");
+    if (score === 0) {
+      //adding animation in specific location
+      //TODO: change to where an enemy has been hit
+      explosion = this.add.sprite(640, 360, "explosion");
 
-    //this will be added to if statement when enemy is hit
-    explosion.play("explosion");
+      explosion.play("explosion", false);
+      //once animation is played, remove the last frame
+      explosion.once("animationcomplete", () => {
+        console.log("animationcomplete");
+        explosion.destroy();
+      });
+    }
+    //todo: use .destroy to delete enemy after being shot + add above animation
+
+    //the score
+    scoreString = "Score: ";
+    scoreText = this.add.text(10, 10, scoreString + score, {
+      fontSize: "16px",
+      fontFamily: '"Press Start 2P"',
+    });
+
+    // function collisionHandler(bullet, enemy) {
+    //   //  When a bullet hits an alien we kill them both
+    //   bullet.kill();
+    //   enemy.kill();
+
+    //   //  Increase the score
+    //   score += 20;
+    //   scoreText.text = scoreString + score;
+    // }
   }
 
   update() {
     sky.tilePositionY += 0.8;
   }
-
-  //todo: use .destroy to delete enemy after being shot + add above animation
 }
