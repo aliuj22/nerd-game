@@ -52,33 +52,83 @@ preload() {
           enemy.setVelocityX (-100);
         }
      
-      
-     
-  },this);
+      },this);
           enemy.setVelocityX(100)        
          enemy.setOrigin(0.5, 0.5);
-    
-              
-         
-      
 
-        enemy2 = this.physics.add.group([{ key: 'invader2', frame: 0, repeat: 10, setXY: {  x: 32, y: 135+40, stepX: 52 } }]);
-        enemy2.setVelocityX(100)
-        enemy2.setOrigin(0.5, 0.5);
-        enemy3 = this.physics.add.group([{ key: 'invader3', frame: 0, repeat: 9, setXY: { x: 32, y: 120+96+40, stepX: 58 }}]);
-        enemy3.setVelocityX(100)
-        enemy3.setOrigin(0.5, 0.5);
+
+        //  enemy2 is been created here
+
+
+         this.physics.world.setBoundsCollision ()
+         enemy2 = this.physics.add.group(); 
+
+         for (var i = 0; i < 13; i++)
+    {
+        var invader =enemy2.create(200 + i * 48,120, 'invader2');
+        //This allows your sprite to collide with the world bounds like they were rigid objects
+         invader.body.collideWorldBounds= true;
+         invader.body.bounce.setTo(1, 1);
+         invader.body.onWorldBounds = true;
+         invader.setImmovable(true);
+
+        console.log(invader);
+
+    }
+
+    this.physics.world.on('worldbounds', function(body, top, bottom, left, right
+      ){
+        console.log('left', left, 'right', right, 'top',top, 'bottom', bottom)
+        if (left){
+          enemy2.setVelocityX (100);
+         
+        }else {
+          enemy2.setVelocityX (-100);
+        }
+     
+      },this);
+          enemy2.setVelocityX(100)        
+          enemy2.setOrigin(0.5, 0.5);
+
+
+          // enemy3 is being created here
+    
+          this.physics.world.setBoundsCollision ()
+          enemy3 = this.physics.add.group(); 
+ 
+          for (var i = 0; i < 13; i++) {
+
+         var invader =enemy2.create(200 + i * 48,190, 'invader3');
+         //This allows your sprite to collide with the world bounds like they were rigid objects
+          invader.body.collideWorldBounds= true;
+          invader.body.bounce.setTo(1, 1);
+          invader.body.onWorldBounds = true;
+          invader.setImmovable(true);
+ 
+         console.log(invader);
+ 
+     }
+ 
+     this.physics.world.on('worldbounds', function(body, top, bottom, left, right
+       ){
+         console.log('left', left, 'right', right, 'top',top, 'bottom', bottom)
+         if (left){
+           enemy3.setVelocityX (100);
+          
+         }else {
+           enemy3.setVelocityX (-100);
+         }
+      
+       },this);
+           enemy3.setVelocityX(100)        
+           enemy3.setOrigin(0.5, 0.5);
+         
+    
      Phaser.Actions.IncX(enemy.getChildren(), 100);
      Phaser.Actions.IncX(enemy2.getChildren(), 100);
      Phaser.Actions.IncX(enemy3.getChildren(), 100);
 
-     
-
-
-    //  var tween = this.add.tween(invader1).to( { x: 200 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-
-    //  //  When the tween loops it calls descend
-    //  tween.onLoop.add(descend, this);
+    
 
   
 
@@ -89,6 +139,14 @@ update (){
  if (enemy.x > this.physics.world.bounds.width){
    enemy.setVelocityX (-100);   
  }
+
+ if(enemy2.x > this.physics.world.bounds.width){
+   enemy2.setVelocityX (-100);
+ }
+
+ if(enemy3.x > this.physics.world.bounds.width){
+  enemy3.setVelocityX (-100);
+}
  
 }
 // checks for object collision,input from user.
