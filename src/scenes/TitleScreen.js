@@ -13,6 +13,7 @@ let characters = [];
 let selectedCharacterIndex = 0;
 let characterSelector;
 let selectedIndex;
+var sky;
 
 export default class TitleScreen extends Phaser.Scene {
   constructor() {
@@ -23,6 +24,7 @@ export default class TitleScreen extends Phaser.Scene {
     this.load.addFile(fonts);
 
     this.load.image("bg", "./assets/big-bg.png");
+
     this.load.image("Alex_key", "./assets/Alex128.png");
     this.load.image("Julia_key", "./assets/Julia128.png");
     this.load.image("Redbull_key", "./assets/redbull128.png");
@@ -30,7 +32,8 @@ export default class TitleScreen extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(400, 300, "bg");
+    sky = this.add.tileSprite(500, 100, 1024, 1024, "bg");
+
     const title = this.add.text(400, 100, "Nerd Invaders", {
       fontSize: "38px",
       fontFamily: '"Press Start 2P"',
@@ -111,6 +114,8 @@ export default class TitleScreen extends Phaser.Scene {
   }
 
   update() {
+    sky.tilePositionY += 0.5;
+
     const rightPressed = Phaser.Input.Keyboard.JustDown(this.cursors.right);
     const leftPressed = Phaser.Input.Keyboard.JustDown(this.cursors.left);
 

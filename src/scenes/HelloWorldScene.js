@@ -4,6 +4,7 @@ import TitleScreen from "./TitleScreen";
 
 const Keys = ["Julia", "Alex", "Redbull"];
 var explosion;
+var sky;
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -37,7 +38,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
   create() {
     console.log(Keys[this.characterIndex]);
-    this.add.image(400, 300, "bg");
+    sky = this.add.tileSprite(500, 100, 1024, 1024, "bg");
 
     const player = this.add.image(100, 100, Keys[this.characterIndex]);
     player.x = 400;
@@ -70,6 +71,10 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     //this will be added to if statement when enemy is hit
     explosion.play("explosion");
+  }
+
+  update() {
+    sky.tilePositionY += 0.8;
   }
 
   //todo: use .destroy to delete enemy after being shot + add above animation
