@@ -7,8 +7,9 @@ const Keys = ["Julia", "Alex", "Redbull"];
 let player, playerControls, fireButton, game;
 //let enemy, enemy2, enemy3, spaceSound, bg;
 let aliens;
-var explosion;
-var sky;
+var explosion, sky, scoreText;
+var score = 0;
+var scoreString = "";
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -245,14 +246,27 @@ export default class HelloWorldScene extends Phaser.Scene {
       this.bullets,
       aliens,
       function (bulletCollide, enemyCollide) {
+        score += 10;
+        scoreText.text = scoreString + score;
         enemyCollide.destroy();
         bulletCollide.destroy();
-        explosion = this.add.sprite(enemyCollide, bulletCollide, "explosion");
+        explosion = this.add.sprite(
+          bulletCollide.x,
+          bulletCollide.y,
+          "explosion"
+        );
 
         //this will be added to if statement when enemy is hit
-        explosion.play("explosion");
+        explosion.play("explosion", false);
       }.bind(this)
     );
+
+    //------SCORE TEXT AND IT'S CALCULATION-------//
+    scoreString = "Score: ";
+    scoreText = this.add.text(10, 10, scoreString + score, {
+      fontSize: "16px",
+      fontFamily: '"Press Start 2P"',
+    });
   }
 
   createAliens() {
