@@ -2,8 +2,7 @@ import Phaser from "phaser";
 
 import WebFontFile from "./WebFontFile";
 
-import HelloWorldScene from "../scenes/HelloWorldScene";
-import TitleScreen from "./TitleScreen";
+var sky;
 
 // import HelloWorldScene from "./HelloWorldScene";
 
@@ -18,7 +17,7 @@ export default class GameOverScene extends Phaser.Scene {
     this.load.image("bg", "./assets/big-bg.png");
   }
   create() {
-    this.add.image(400, 300, "bg");
+    sky = this.add.tileSprite(500, 100, 1024, 1024, "bg");
 
     this.add
       .text(400, 80, "Game Over!", {
@@ -45,5 +44,9 @@ export default class GameOverScene extends Phaser.Scene {
       console.log("enter down");
       this.scene.start("title-screen");
     });
+  }
+
+  update() {
+    sky.tilePositionY += 0.5;
   }
 }

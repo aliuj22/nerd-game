@@ -7,6 +7,8 @@ const Keys = ["Julia", "Alex", "Redbull"];
 let player, playerControls, fireButton, game;
 //let enemy, enemy2, enemy3, spaceSound, bg;
 let aliens;
+var explosion;
+var sky;
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -43,11 +45,15 @@ export default class HelloWorldScene extends Phaser.Scene {
     );
 
     this.load.image("bullet", "./assets/laser-red-2.png");
+    this.load.spritesheet("explosion", "./assets/explosion-2.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
   }
 
   create() {
-    // background image is being created here
-    this.add.image(400, 300, "bg");
+    console.log(Keys[this.characterIndex]);
+    sky = this.add.tileSprite(500, 100, 1024, 1024, "bg");
 
     player = this.physics.add.sprite(100, 100, Keys[this.characterIndex]);
     player.setCollideWorldBounds(true);
@@ -241,6 +247,10 @@ export default class HelloWorldScene extends Phaser.Scene {
       function (bulletCollide, enemyCollide) {
         enemyCollide.destroy();
         bulletCollide.destroy();
+        explosion = this.add.sprite(enemyCollide, bulletCollide, "explosion");
+
+        //this will be added to if statement when enemy is hit
+        explosion.play("explosion");
       }.bind(this)
     );
   }
@@ -262,6 +272,18 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   update() {
+    //animation for explosions
+    this.anims.create({
+      key: "explosion",
+      frameRate: 5,
+      frames: this.anims.generateFrameNumbers("explosion", {
+        start: 0,
+        end: 8,
+      }),
+      repeat: 0,
+    });
+
+    sky.tilePositionY += 0.8;
     // if (enemy.x > this.physics.world.bounds.width) {
     //   enemy.setVelocityX(-100);
     // }
@@ -305,5 +327,3 @@ export default class HelloWorldScene extends Phaser.Scene {
     }
   }
 }
-
-// checks for object collision,input from user.
