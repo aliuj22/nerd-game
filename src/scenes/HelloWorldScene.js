@@ -59,7 +59,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     this.bullets = this.physics.add.group({
       //the maximum number of bullets. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
-      maxSize: 1,
+      maxSize: 3,
       classType: Bullet,
       //Since the bullet needs to update its position runChildUpdate must be true.
       runChildUpdate: true,
@@ -113,9 +113,10 @@ export default class HelloWorldScene extends Phaser.Scene {
         );
 
         //this will be added to if statement when enemy is hit
-        //explosion.play('explosion', false);
-        explosion.play('explosion', false);
-        explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+
+        // frameRate default = 24
+        explosion.play({ key: 'explosion', hideOnComplete: true }, false);
+        explosion.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
           //   console.log(Phaser.Animations.Events.ANIMATION_COMPLETE);
           explosion.destroy();
         });
