@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 import Bullet from "../Bullet";
+import Bomb from "../bomb";
 //import TitleScreen from './TitleScreen';
 
 const Keys = ["Julia", "Alex", "Redbull"];
@@ -10,6 +11,7 @@ let aliens;
 var explosion, sky, scoreText;
 var score = 0;
 var scoreString = "";
+var bomb;
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -30,6 +32,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+    this.load.image("bomb", "./assets/laser-blue-3.png");
     // this.load.spritesheet("invader2", "./assets/python.png", {
     //   frameWidth: 44,
     //   frameHeight: 32,
@@ -78,6 +81,19 @@ export default class HelloWorldScene extends Phaser.Scene {
     fireButton = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
+
+    this.bomb = this.physics.add.group({
+      //the maximum number of bullets. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
+      maxSize: 5,
+      classType: Bomb,
+      //Since the bullet needs to update its position runChildUpdate must be true.
+      runChildUpdate: true,
+    });
+
+    this.physics.world.on("worldbounds", this.onWorldbounds, this);
+
+    
+
 
     // //  spaceSound = this.sound.add('space', { volume: 0.2 });
 
@@ -250,7 +266,10 @@ export default class HelloWorldScene extends Phaser.Scene {
         scoreText.text = scoreString + score;
         enemyCollide.destroy();
         bulletCollide.destroy();
+        // bombCollide.destroy();
         explosion = this.add.sprite(
+          // bombCollide.x,
+          // bombCollide.y,
           bulletCollide.x,
           bulletCollide.y,
           "explosion"
@@ -260,6 +279,25 @@ export default class HelloWorldScene extends Phaser.Scene {
         explosion.play("explosion", false);
       }.bind(this)
     );
+
+    this.physics.add.collider(
+      this.bomb,
+      player,
+      function (bombCollide, playerCollide) {
+  
+        playerCollide.destroy();
+       bombCollide.destroy();
+        // bombCollide.destroy();
+        // explosion = this.add.sprite(
+        //   // bombCollide.x,
+        //   // bombCollide.y,
+        //   playerCollide.x,
+        //   bombCollide.y,
+        //   "explosion"
+        // );
+      }.bind(this)
+      );
+
 
     //------SCORE TEXT AND IT'S CALCULATION-------//
     scoreString = "Score: ";
@@ -316,6 +354,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     //fireing bullets on space down
     if (fireButton.isDown) {
       this.fireBullet();
+      this.throwBomb();
     }
   }
 
@@ -333,10 +372,22 @@ export default class HelloWorldScene extends Phaser.Scene {
       bullet.shoot(player.x, player.y - 100);
     }
   }
+
+  throwBomb (){
+    const bomb = this.bomb.get();
+    if(bomb) {
+      bomb.throw(aliens.x, aliens.y +100)
+    }
+  }
   onWorldbounds(body) {
     const isBullet = this.bullets.contains(body.gameObject);
     if (isBullet) {
       //body.gameObject.deactivate();
+      body.gameObject.destroy();
+    }
+
+    const isBomb = this.bomb.contains(body.gameObject);
+    if(isBomb) {
       body.gameObject.destroy();
     }
   }
