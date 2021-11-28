@@ -83,10 +83,10 @@ export default class HelloWorldScene extends Phaser.Scene {
     );
 
     this.bomb = this.physics.add.group({
-      //the maximum number of bullets. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
+      //the maximum number of bomb. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
       maxSize: 5,
       classType: Bomb,
-      //Since the bullet needs to update its position runChildUpdate must be true.
+      //Since the bomb needs to update its position runChildUpdate must be true.
       runChildUpdate: true,
     });
 
