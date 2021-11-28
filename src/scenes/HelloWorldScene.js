@@ -114,7 +114,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
         //this will be added to if statement when enemy is hit
         //explosion.play('explosion', false);
-        explosion.play('explosion', false);
+        explosion.play({ key: 'explosion', hideOnComplete: true }, false);
         explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
           //   console.log(Phaser.Animations.Events.ANIMATION_COMPLETE);
           explosion.destroy();
@@ -167,7 +167,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     //animation for explosions
     this.anims.create({
       key: 'explosion',
-      frameRate: 5,
+      frameRate: 10,
       frames: this.anims.generateFrameNumbers('explosion', {
         start: 0,
         end: 8,
@@ -184,6 +184,9 @@ export default class HelloWorldScene extends Phaser.Scene {
     if (fireButton.isDown) {
       this.fireBullet();
     }
+
+    //checks if all enemies from a wave are dead
+    this.checkIfAllEnemiesDead();
   }
 
   movePlayer() {
@@ -205,6 +208,31 @@ export default class HelloWorldScene extends Phaser.Scene {
     if (isBullet) {
       //body.gameObject.deactivate();
       body.gameObject.destroy();
+    }
+  }
+
+  checkIfAllEnemiesDead() {
+    if (aliens.countActive(true) === 0) {
+      this.createAliens();
+      this.tweens.add({
+        targets: aliens,
+        duration: 2000,
+      });
+      Phaser.Actions.Call(
+        aliens.getChildren(),
+        (function movingAliens(context) {
+          return function (go) {
+            context.tweens.add({
+              targets: go,
+              y: go.y + 0,
+              x: go.x + 200,
+              duration: 2000,
+              repeat: -1,
+              yoyo: true,
+            });
+          };
+        })(this)
+      );
     }
   }
 }
