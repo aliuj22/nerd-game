@@ -26,7 +26,31 @@ export default class HelloWorldScene extends Phaser.Scene {
 
   preload() {
     this.load.audio('space', './assets/space.mp3');
-    this.load.spritesheet('invader', './assets/python.png', {
+    this.load.spritesheet('invader0', './assets/html.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader1', './assets/css.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader2', './assets/javascript.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader3', './assets/java.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader4', './assets/python.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader5', './assets/php.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader6', './assets/kotlin.png', {
       frameWidth: 32,
       frameHeight: 32,
     });
@@ -59,7 +83,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     this.bullets = this.physics.add.group({
       //the maximum number of bullets. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
-      maxSize: 3,
+      maxSize: 1,
       classType: Bullet,
       //Since the bullet needs to update its position runChildUpdate must be true.
       runChildUpdate: true,
@@ -123,14 +147,6 @@ export default class HelloWorldScene extends Phaser.Scene {
       }.bind(this)
     );
 
-    // game.physics.arcade.overlap(
-    //   this.bullets,
-    //   aliens,
-    //   this.collisionHandler,
-    //   null,
-    //   this
-    // );
-
     //------SCORE TEXT AND IT'S CALCULATION-------//
     scoreString = 'Score: ';
     scoreText = this.add.text(10, 10, scoreString + score, {
@@ -155,7 +171,11 @@ export default class HelloWorldScene extends Phaser.Scene {
   createAliens() {
     for (var y = 0; y < 4; y++) {
       for (var x = 0; x < 10; x++) {
-        var alien = aliens.create(x * 48, y * 50, 'invader');
+        var alien = aliens.create(
+          x * 48,
+          y * 50,
+          `invader${Math.floor(Math.random() * 7)}`
+        );
         alien.setOrigin(-3, -3);
       }
     }
@@ -171,7 +191,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameRate: 5,
       frames: this.anims.generateFrameNumbers('explosion', {
         start: 0,
-        end: 8,
+        end: 7,
       }),
       repeat: 0,
     });
