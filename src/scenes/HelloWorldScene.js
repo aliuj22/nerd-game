@@ -38,19 +38,24 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet('invader3', './assets/java.png', {
+    this.load.spritesheet('invader3', './assets/csharp.png', {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet('invader4', './assets/python.png', {
+    this.load.spritesheet('invader4', './assets/java.png', {
       frameWidth: 32,
       frameHeight: 32,
     });
+
     this.load.spritesheet('invader5', './assets/php.png', {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet('invader6', './assets/kotlin.png', {
+    this.load.spritesheet('invader6', './assets/ruby.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader7', './assets/typescript.png', {
       frameWidth: 32,
       frameHeight: 32,
     });
