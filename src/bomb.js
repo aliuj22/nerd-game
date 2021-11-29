@@ -3,7 +3,7 @@ import 'phaser';
 export default class Bomb extends Phaser.Physics.Arcade.Sprite {
 
   constructor(scene) {
-    super(scene, 0, 0, 'bomb');
+    super(scene, 300, 300, 'bomb');
     this.play('bomb');
   }
 

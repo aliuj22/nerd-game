@@ -12,6 +12,9 @@ var explosion, sky, scoreText;
 var score = 0;
 var scoreString = "";
 var bomb;
+var alienThrowsBomb;
+var alienThrowsBombInFuture
+var bombInterval;
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -70,7 +73,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     this.bullets = this.physics.add.group({
       //the maximum number of bullets. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
-      maxSize: 5,
+      maxSize: 1,
       classType: Bullet,
       //Since the bullet needs to update its position runChildUpdate must be true.
       runChildUpdate: true,
@@ -82,12 +85,13 @@ export default class HelloWorldScene extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
 
-    this.bomb = this.physics.add.group({
+    this.bomb = this.physics.add.group( {
       //the maximum number of bomb. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
-      maxSize: 5,
+      maxSize: 1,
       classType: Bomb,
       //Since the bomb needs to update its position runChildUpdate must be true.
       runChildUpdate: true,
+      
     });
 
     this.physics.world.on("worldbounds", this.onWorldbounds, this);
@@ -199,6 +203,8 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     this.createAliens();
 
+    
+
     // var destX = 700;
     // let tween = this.tweens.add({
     //   targets: aliens,
@@ -266,35 +272,34 @@ export default class HelloWorldScene extends Phaser.Scene {
         scoreText.text = scoreString + score;
         enemyCollide.destroy();
         bulletCollide.destroy();
-        // bombCollide.destroy();
         explosion = this.add.sprite(
-          // bombCollide.x,
-          // bombCollide.y,
           bulletCollide.x,
           bulletCollide.y,
           "explosion"
         );
 
         //this will be added to if statement when enemy is hit
-        explosion.play("explosion", false);
+        explosion.play({key: "explosion", hideOnComplete: true}, false);
+        explosion.on (Phaser.Animations.Events.ANIMATION_COMPLETE, () =>{
+          explosion.destroy();
+        });
       }.bind(this)
     );
 
     this.physics.add.collider(
       this.bomb,
       player,
-      function (bombCollide, playerCollide) {
-  
+      function (bombCollide, playerCollide) {        
         playerCollide.destroy();
-       bombCollide.destroy();
-        // bombCollide.destroy();
-        // explosion = this.add.sprite(
-        //   // bombCollide.x,
-        //   // bombCollide.y,
-        //   playerCollide.x,
-        //   bombCollide.y,
-        //   "explosion"
-        // );
+        bombCollide.destroy();
+        bombCollide.destroy();
+        explosion = this.add.sprite(
+          // bombCollide.x,
+          // bombCollide.y,
+          // playerCollide.x,
+          // bombCollide.y,
+          // "explosion"
+        );
       }.bind(this)
       );
 
@@ -334,7 +339,12 @@ export default class HelloWorldScene extends Phaser.Scene {
       }),
       repeat: 0,
     });
-
+    if(bombInterval < 100){
+      bombInterval++
+    }else{
+      bombInterval = 0
+      this.throwBomb()
+    }
     sky.tilePositionY += 0.8;
     // if (enemy.x > this.physics.world.bounds.width) {
     //   enemy.setVelocityX(-100);
@@ -354,7 +364,8 @@ export default class HelloWorldScene extends Phaser.Scene {
     //fireing bullets on space down
     if (fireButton.isDown) {
       this.fireBullet();
-      this.throwBomb();
+      // this.throwBomb();
+      
     }
   }
 
@@ -374,9 +385,14 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   throwBomb (){
+    console.log(aliens.getChildren())
+    let random = Math.floor(Math.random() * aliens.getChildren().length)
     const bomb = this.bomb.get();
     if(bomb) {
-      bomb.throw(aliens.x, aliens.y +100)
+      bomb.throw(aliens.getChildren()[random].body.center.x, aliens.getChildren()[random].body.center.y)
+      // bomb.setVelocityY(Phaser.Math.Between(-200, 200), 30);
+      
+      
     }
   }
   onWorldbounds(body) {
