@@ -1,15 +1,23 @@
 import Phaser from 'phaser';
 
 import Bullet from '../Bullet';
-//import TitleScreen from './TitleScreen';
+import GameOverScene from './game-over';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
 let player, playerControls, fireButton, game;
 //let enemy, enemy2, enemy3, spaceSound, bg;
 let aliens;
-var explosion, sky, scoreText;
+var explosion,
+  sky,
+  addScoreTextToTheScreen,
+  addLifeTextToTheScreen,
+  width,
+  height;
 var score = 0;
-var scoreString = '';
+var scoreStringOnScreen = '';
+var livesLeft = 3;
+var lifeStringOnScreen = '';
+//---START GAME OVER SCENE---//
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -45,9 +53,16 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   create() {
-    console.log(Keys[this.characterIndex]);
+    //---GAME WIDTH---//
+    width = this.physics.world.bounds.width;
+
+    //---GAME HEIGHT---//
+    height = this.physics.world.bounds.height;
+
+    //----CREATING BACKGORUND----//
     sky = this.add.tileSprite(500, 100, 1024, 1024, 'bg');
 
+    //----ADDING PLAYERS CHOSEN CHARACTER----//
     player = this.physics.add.sprite(100, 100, Keys[this.characterIndex]);
     player.setCollideWorldBounds(true);
     player.x = 400;
@@ -57,6 +72,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     this.physics.add.existing(player);
     playerControls = this.input.keyboard.createCursorKeys();
 
+    //---ADDING PLAYERS BULLET--- //
     this.bullets = this.physics.add.group({
       //the maximum number of bullets. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
       maxSize: 1,
@@ -67,6 +83,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     this.physics.world.on('worldbounds', this.onWorldbounds, this);
 
+    //---SPECIFYING BUTTON FOR FIRING---//
     fireButton = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
@@ -77,6 +94,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     this.createAliens();
 
+    //THIS CREATES MOVEMENT OF THE ALIENS
     this.tweens.add({
       targets: aliens,
       duration: 2000,
@@ -97,13 +115,17 @@ export default class HelloWorldScene extends Phaser.Scene {
       })(this)
     );
 
-    //------------DESTROYING ENEMIES----------
+    //------------DESTROYING ENEMIES----------//
     this.physics.add.collider(
       this.bullets,
       aliens,
       function (bulletCollide, enemyCollide) {
         score += 10;
-        scoreText.text = scoreString + score;
+        addScoreTextToTheScreen.text = scoreStringOnScreen + score;
+
+        // livesLeft -= 1;
+        // addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
+
         enemyCollide.destroy();
         bulletCollide.destroy();
         explosion = this.add.sprite(
@@ -112,45 +134,60 @@ export default class HelloWorldScene extends Phaser.Scene {
           'explosion'
         );
 
-        //this will be added to if statement when enemy is hit
-        //explosion.play('explosion', false);
         explosion.play({ key: 'explosion', hideOnComplete: true }, false);
         explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-          //   console.log(Phaser.Animations.Events.ANIMATION_COMPLETE);
           explosion.destroy();
         });
+
+        // if (livesLeft === 0) {
+        //   this.scene.start('game-over', [score, scoreStringOnScreen]);
+        // }
       }.bind(this)
     );
 
-    // game.physics.arcade.overlap(
+    //---PLAYER/BOMB COLLISION HANDLER---//
+    // this.physics.add.collider(
     //   this.bullets,
-    //   aliens,
-    //   this.collisionHandler,
-    //   null,
-    //   this
+    //   player,
+    //   function (playerCollide, bombCollide) {
+    //     livesLeft -= 1;
+    //     addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
+
+    //     bombCollide.destroy();
+    //       playerCollide.destroy();
+    //     if (livesLeft === 0) {
+    //       this.scene.start('game-over', [score, scoreStringOnScreen]);
+    //     }
+    //   }.bind(this)
     // );
 
-    //------SCORE TEXT AND IT'S CALCULATION-------//
-    scoreString = 'Score: ';
-    scoreText = this.add.text(10, 10, scoreString + score, {
-      fontSize: '16px',
-      fontFamily: '"Press Start 2P"',
-    });
+    //------SCORE TEXT - SHOW ON SCREEN-------//
+    scoreStringOnScreen = 'Score: ';
+    addScoreTextToTheScreen = this.add.text(
+      10,
+      10,
+      scoreStringOnScreen + score,
+      {
+        fontSize: '16px',
+        fontFamily: '"Press Start 2P"',
+      }
+    );
+
+    //--------SHOWING AMOUNT OF LIFE ON THE SCREEN------//
+    lifeStringOnScreen = 'Lives Left: ';
+    addLifeTextToTheScreen = this.add.text(
+      width - 10,
+      10,
+      lifeStringOnScreen + livesLeft,
+      {
+        fontSize: '16px',
+        fontFamily: '"Press Start 2P"',
+      }
+    );
+    addLifeTextToTheScreen.setOrigin(1, 0);
   }
 
-  // hitBox(player, explosion) {
-  //   explosion.play('explosion', false);
-  //   explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-  //     console.log(Phaser.Animations.Events.ANIMATION_COMPLETE);
-  //     explosion.destroy();
-  //   });
-  // }
-
-  // collisionHandler(bullet, enemy) {
-  //   bullet.destroy();
-  //   enemy.destroy();
-  // }
-
+  //---CREATING ALIENS---//
   createAliens() {
     for (var y = 0; y < 4; y++) {
       for (var x = 0; x < 10; x++) {
@@ -164,7 +201,7 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   update() {
-    //animation for explosions
+    //ANIMATION FOR EXPLOSIONS
     this.anims.create({
       key: 'explosion',
       frameRate: 10,
@@ -175,17 +212,18 @@ export default class HelloWorldScene extends Phaser.Scene {
       repeat: 0,
     });
 
+    //MOVING BACKGROUND
     sky.tilePositionY += 0.8;
 
-    //moving the player
+    //MOVING THE PLAYER
     this.movePlayer();
 
-    //firing bullets on space down
+    //FIRING BULLETS ON SPACE DOWN
     if (fireButton.isDown) {
       this.fireBullet();
     }
 
-    //checks if all enemies from a wave are dead
+    //CHECKS IF ALL ENEMIES FROM A WAVE ARE DEAD
     this.checkIfAllEnemiesDead();
   }
 
@@ -236,3 +274,5 @@ export default class HelloWorldScene extends Phaser.Scene {
     }
   }
 }
+
+export { score, scoreStringOnScreen };
