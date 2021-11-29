@@ -1,13 +1,13 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
-import WebFontFile from "./WebFontFile";
+import WebFontFile from './WebFontFile';
 
 //import HelloWorldScene from '../scenes/HelloWorldScene';
 
-const Alex_key = "Alex";
-const Julia_key = "Julia";
-const Redbull_key = "Redbull";
-const selector_key = "selector";
+const Alex_key = 'Alex';
+const Julia_key = 'Julia';
+const Redbull_key = 'Redbull';
+const selector_key = 'selector';
 
 let characters = [];
 let selectedCharacterIndex = 0;
@@ -17,33 +17,33 @@ var sky;
 
 export default class TitleScreen extends Phaser.Scene {
   constructor() {
-    super("title-screen");
+    super('title-screen');
   }
   preload() {
-    const fonts = new WebFontFile(this.load, "Press Start 2P");
+    const fonts = new WebFontFile(this.load, 'Press Start 2P');
     this.load.addFile(fonts);
 
-    this.load.image("bg", "./assets/big-bg.png");
+    this.load.image('bg', './assets/big-bg.png');
 
-    this.load.image("Alex_key", "./assets/Alex128.png");
-    this.load.image("Julia_key", "./assets/Julia128.png");
-    this.load.image("Redbull_key", "./assets/redbull128.png");
-    this.load.image("selector_key", "./assets/selector.png");
+    this.load.image('Alex_key', './assets/Alex128.png');
+    this.load.image('Julia_key', './assets/Julia128.png');
+    this.load.image('Redbull_key', './assets/redbull128.png');
+    this.load.image('selector_key', './assets/selector.png');
   }
 
   create() {
-    sky = this.add.tileSprite(500, 100, 1024, 1024, "bg");
+    sky = this.add.tileSprite(500, 100, 1024, 1024, 'bg');
 
-    const title = this.add.text(400, 100, "Nerd Invaders", {
-      fontSize: "38px",
+    const title = this.add.text(400, 100, 'Nerd Invaders', {
+      fontSize: '38px',
       fontFamily: '"Press Start 2P"',
     });
     title.setOrigin(0.5, 0.5);
 
-    const Alex = this.add.image(100, 100, "Alex_key");
-    const Julia = this.add.image(100, 100, "Julia_key");
-    const Redbull = this.add.image(100, 100, "Redbull_key");
-    characterSelector = this.add.image(110, 110, "selector_key");
+    const Alex = this.add.image(100, 100, 'Alex_key');
+    const Julia = this.add.image(100, 100, 'Julia_key');
+    const Redbull = this.add.image(100, 100, 'Redbull_key');
+    characterSelector = this.add.image(110, 110, 'selector_key');
 
     // characterSelector.x = 400;
     // characterSelector.y = 300;
@@ -59,26 +59,26 @@ export default class TitleScreen extends Phaser.Scene {
     characters.push(Julia);
     characters.push(Alex);
     characters.push(Redbull);
-    console.log("characters are", characters);
+    console.log('characters are', characters);
 
     this.add
-      .text(400, 500, "⬅️ ➡️ to select the character", {
-        fontSize: "20px",
+      .text(400, 500, '⬅️ ➡️ to select the character', {
+        fontSize: '20px',
         fontFamily: '"Press Start 2P"',
       })
       .setOrigin(0.5);
 
     this.add
-      .text(400, 530, "then press space to start", {
-        fontSize: "20px",
+      .text(400, 530, 'then press space to start', {
+        fontSize: '20px',
         fontFamily: '"Press Start 2P"',
       })
       .setOrigin(0.5);
 
-    this.input.keyboard.once("keydown-SPACE", () => {
-      console.log("space down");
+    this.input.keyboard.once('keydown-SPACE', () => {
+      console.log('space down');
       // sending data to next page
-      this.scene.start("hello-world", {
+      this.scene.start('hello-world', {
         characterIndex: selectedIndex,
       });
     });
@@ -110,7 +110,7 @@ export default class TitleScreen extends Phaser.Scene {
     }
     this.selectCharacter(selectedIndex);
 
-    console.log("index is", selectedIndex);
+    console.log('index is', selectedIndex);
   }
 
   update() {

@@ -5,7 +5,7 @@ import Bomb from '../bomb';
 //import TitleScreen from './TitleScreen';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
-let player, playerControls, fireButton, game;
+let player, playerControls, fireButton;
 //let enemy, enemy2, enemy3, spaceSound, bg;
 let aliens;
 var explosion,
@@ -57,6 +57,11 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   create() {
+    //------RESET SCORE AND LIVES COUNT AT GAME START-----//
+    if (score > 0 || livesLeft < 3) {
+      score = 0;
+      livesLeft = 3;
+    }
     //---GAME WIDTH---//
     width = this.physics.world.bounds.width;
 
@@ -71,7 +76,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     player.setCollideWorldBounds(true);
     player.x = 400;
     player.y = 500;
-    console.log('init is ', this.data);
+    // console.log('init is ', this.data);
 
     this.physics.add.existing(player);
     playerControls = this.input.keyboard.createCursorKeys();
@@ -265,7 +270,7 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   throwBomb() {
-    console.log(aliens.getChildren());
+    // console.log(aliens.getChildren());
     let random = Math.floor(Math.random() * aliens.getChildren().length);
     const bomb = this.bomb.get();
     if (bomb) {

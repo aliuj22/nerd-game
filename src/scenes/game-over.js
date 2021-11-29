@@ -44,6 +44,7 @@ export default class GameOverScene extends Phaser.Scene {
 
     this.input.keyboard.once('keydown-ENTER', () => {
       console.log('enter down');
+      // start title screen scene
       this.scene.start('title-screen');
     });
   }
