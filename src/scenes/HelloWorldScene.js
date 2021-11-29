@@ -12,8 +12,6 @@ var explosion, sky, scoreText;
 var score = 0;
 var scoreString = "";
 var bomb;
-var alienThrowsBomb;
-var alienThrowsBombInFuture
 var bombInterval;
 
 export default class HelloWorldScene extends Phaser.Scene {
