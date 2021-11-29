@@ -147,7 +147,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     //---PLAYER/BOMB COLLISION HANDLER---//
     // this.physics.add.collider(
-    //   this.bullets,
+    //   this.boms,
     //   player,
     //   function (playerCollide, bombCollide) {
     //     livesLeft -= 1;
