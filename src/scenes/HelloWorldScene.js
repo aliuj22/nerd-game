@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import Bullet from '../Bullet';
-import GameOverScene from './game-over';
+// import GameOverScene from './game-over';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
 let player, playerControls, fireButton, game;
@@ -95,10 +95,12 @@ export default class HelloWorldScene extends Phaser.Scene {
     this.createAliens();
 
     //THIS CREATES MOVEMENT OF THE ALIENS
+
     this.tweens.add({
       targets: aliens,
       duration: 2000,
     });
+
     Phaser.Actions.Call(
       aliens.getChildren(),
       (function (context) {
@@ -207,7 +209,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameRate: 10,
       frames: this.anims.generateFrameNumbers('explosion', {
         start: 0,
-        end: 8,
+        end: 7,
       }),
       repeat: 0,
     });
