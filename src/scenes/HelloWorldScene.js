@@ -169,7 +169,6 @@ export default class HelloWorldScene extends Phaser.Scene {
         addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
 
         bombCollide.destroy();
-        playerCollide.destroy();
         if (livesLeft === 0) {
           this.scene.start('game-over', [score, scoreStringOnScreen]);
         }
