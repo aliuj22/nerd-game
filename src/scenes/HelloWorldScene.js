@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 
 import Bullet from '../Bullet';
-// import GameOverScene from './game-over';
+import Bomb from '../bomb';
+//import TitleScreen from './TitleScreen';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
 let player, playerControls, fireButton, game;
@@ -17,6 +18,8 @@ var score = 0;
 var scoreStringOnScreen = '';
 var livesLeft = 3;
 var lifeStringOnScreen = '';
+var bomb;
+var bombInterval;
 //---START GAME OVER SCENE---//
 
 export default class HelloWorldScene extends Phaser.Scene {
@@ -38,6 +41,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+    this.load.image('bomb', './assets/laser-blue-3.png');
 
     this.load.image('bg', './assets/big-bg.png');
     this.load.image(
@@ -88,10 +92,19 @@ export default class HelloWorldScene extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
 
-    aliens = this.physics.add.group();
-    // aliens.enableBody = true;
-    // aliens.physicsBodyType = Phaser.Physics.Arcade;
+    this.bomb = this.physics.add.group({
+      //the maximum number of bomb. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
+      maxSize: 1,
+      classType: Bomb,
+      //Since the bomb needs to update its position runChildUpdate must be true.
+      runChildUpdate: true,
+    });
 
+    this.physics.world.on('worldbounds', this.onWorldbounds, this);
+
+    // //  spaceSound = this.sound.add('space', { volume: 0.2 });
+
+    aliens = this.physics.add.group();
     this.createAliens();
 
     //THIS CREATES MOVEMENT OF THE ALIENS
@@ -148,20 +161,20 @@ export default class HelloWorldScene extends Phaser.Scene {
     );
 
     //---PLAYER/BOMB COLLISION HANDLER---//
-    // this.physics.add.collider(
-    //   this.boms,
-    //   player,
-    //   function (playerCollide, bombCollide) {
-    //     livesLeft -= 1;
-    //     addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
+    this.physics.add.collider(
+      this.bomb,
+      player,
+      function (playerCollide, bombCollide) {
+        livesLeft -= 1;
+        addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
 
-    //     bombCollide.destroy();
-    //       playerCollide.destroy();
-    //     if (livesLeft === 0) {
-    //       this.scene.start('game-over', [score, scoreStringOnScreen]);
-    //     }
-    //   }.bind(this)
-    // );
+        bombCollide.destroy();
+        playerCollide.destroy();
+        if (livesLeft === 0) {
+          this.scene.start('game-over', [score, scoreStringOnScreen]);
+        }
+      }.bind(this)
+    );
 
     //------SCORE TEXT - SHOW ON SCREEN-------//
     scoreStringOnScreen = 'Score: ';
@@ -214,6 +227,13 @@ export default class HelloWorldScene extends Phaser.Scene {
       repeat: 0,
     });
 
+    if (bombInterval < 100) {
+      bombInterval++;
+    } else {
+      bombInterval = 0;
+      this.throwBomb();
+    }
+
     //MOVING BACKGROUND
     sky.tilePositionY += 0.8;
 
@@ -223,6 +243,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     //FIRING BULLETS ON SPACE DOWN
     if (fireButton.isDown) {
       this.fireBullet();
+      // this.throwBomb();
     }
 
     //CHECKS IF ALL ENEMIES FROM A WAVE ARE DEAD
@@ -243,10 +264,28 @@ export default class HelloWorldScene extends Phaser.Scene {
       bullet.shoot(player.x, player.y - 100);
     }
   }
+
+  throwBomb() {
+    console.log(aliens.getChildren());
+    let random = Math.floor(Math.random() * aliens.getChildren().length);
+    const bomb = this.bomb.get();
+    if (bomb) {
+      bomb.throw(
+        aliens.getChildren()[random].body.center.x,
+        aliens.getChildren()[random].body.center.y
+      );
+      // bomb.setVelocityY(Phaser.Math.Between(-200, 200), 30);
+    }
+  }
   onWorldbounds(body) {
     const isBullet = this.bullets.contains(body.gameObject);
     if (isBullet) {
       //body.gameObject.deactivate();
+      body.gameObject.destroy();
+    }
+
+    const isBomb = this.bomb.contains(body.gameObject);
+    if (isBomb) {
       body.gameObject.destroy();
     }
   }
