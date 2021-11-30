@@ -82,7 +82,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.image('bomb', './assets/bomb.png');
+    this.load.image('bomb', './assets/404-error.png');
 
     // this.load.image('invader0', './assets/html.png');
     // this.load.image('invader1', './assets/css.png');
@@ -92,7 +92,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     // this.load.image('invader5', './assets/php.png');
     // this.load.image('invader6', './assets/kotlin.png');
 
-    this.load.image('bg', './assets/big-bg.png');
+    this.load.image('bg', './assets/test.png');
     this.load.image(
       `${Keys[this.characterIndex]}`,
       `./assets/${Keys[this.characterIndex]}128.png`
@@ -126,6 +126,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     player.x = 400;
     player.y = 500;
     player.setBodySize(80, 80);
+    player.setPushable(false);
 
     this.physics.add.existing(player);
     playerControls = this.input.keyboard.createCursorKeys();
@@ -221,7 +222,6 @@ export default class HelloWorldScene extends Phaser.Scene {
       function (playerCollide, bombCollide) {
         livesLeft -= 1;
         addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
-
         bombCollide.destroy();
         if (livesLeft === 0) {
           this.scene.start('game-over', [score, scoreStringOnScreen]);
@@ -286,6 +286,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     if (bombInterval < 100) {
       bombInterval++;
+      console.log(bombInterval);
     } else {
       bombInterval = 0;
       this.throwBomb();

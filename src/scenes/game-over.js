@@ -16,7 +16,7 @@ export default class GameOverScene extends Phaser.Scene {
   preload() {
     const fonts = new WebFontFile(this.load, 'Press Start 2P');
     this.load.addFile(fonts);
-    this.load.image('bg', './assets/big-bg.png');
+    this.load.image('bg', './assets/test.png');
   }
   create() {
     sky = this.add.tileSprite(500, 100, 1024, 1024, 'bg');
