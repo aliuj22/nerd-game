@@ -13,7 +13,7 @@ let characters = [];
 let selectedCharacterIndex = 0;
 let characterSelector;
 let selectedIndex;
-var sky;
+var sky, spaceSound;
 
 export default class TitleScreen extends Phaser.Scene {
   constructor() {
@@ -29,10 +29,14 @@ export default class TitleScreen extends Phaser.Scene {
     this.load.image('Julia_key', './assets/Julia128.png');
     this.load.image('Redbull_key', './assets/redbull128.png');
     this.load.image('selector_key', './assets/selector.png');
+    this.load.audio('space', './assets/space.mp3');
   }
 
   create() {
     sky = this.add.tileSprite(500, 100, 1024, 1024, 'bg');
+
+    spaceSound = this.sound.add('space', { volume: 0.2 });
+    spaceSound.play();
 
     const title = this.add.text(400, 100, 'Nerd Invaders', {
       fontSize: '38px',

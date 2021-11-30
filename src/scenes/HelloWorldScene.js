@@ -5,7 +5,7 @@ import Bomb from '../bomb';
 //import TitleScreen from './TitleScreen';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
-let player, playerControls, fireButton;
+let player, playerControls, fireButton, bulletSound;
 //let enemy, enemy2, enemy3, spaceSound, bg;
 let aliens;
 var explosion,
@@ -13,7 +13,9 @@ var explosion,
   addScoreTextToTheScreen,
   addLifeTextToTheScreen,
   width,
-  height;
+  height,
+  spaceSound,
+  bombSound;
 var score = 0;
 var scoreStringOnScreen = '';
 var livesLeft = 3;
@@ -36,6 +38,9 @@ export default class HelloWorldScene extends Phaser.Scene {
 
   preload() {
     this.load.audio('space', './assets/space.mp3');
+    this.load.audio('bulletSound', './assets/bulletSound.wav');
+    this.load.audio('bombSound', './assets/explosion.wav');
+
     this.load.spritesheet('invader0', './assets/html.png', {
       frameWidth: 32,
       frameHeight: 32,
@@ -83,14 +88,6 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameHeight: 32,
     });
     this.load.image('bomb', './assets/bomb.png');
-
-    // this.load.image('invader0', './assets/html.png');
-    // this.load.image('invader1', './assets/css.png');
-    // this.load.image('invader2', './assets/javascript.png');
-    // this.load.image('invader3', './assets/java.png');
-    // this.load.image('invader4', './assets/python.png');
-    // this.load.image('invader5', './assets/php.png');
-    // this.load.image('invader6', './assets/kotlin.png');
 
     this.load.image('bg', './assets/big-bg.png');
     this.load.image(
@@ -156,7 +153,12 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     this.physics.world.on('worldbounds', this.onWorldbounds, this);
 
-    // //  spaceSound = this.sound.add('space', { volume: 0.2 });
+    spaceSound = this.sound.add('space', { volume: 0.2 });
+    spaceSound.play();
+
+    bulletSound = this.sound.add('bulletSound', { volume: 0.2 });
+
+    bombSound = this.sound.add('bombSound', { volume: 0.2 });
 
     aliens = this.physics.add.group();
     this.createAliens();
@@ -222,6 +224,7 @@ export default class HelloWorldScene extends Phaser.Scene {
         livesLeft -= 1;
         addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
 
+        bombSound.play();
         bombCollide.destroy();
         if (livesLeft === 0) {
           this.scene.start('game-over', [score, scoreStringOnScreen]);
@@ -319,6 +322,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     const bullet = this.bullets.get();
     if (bullet) {
       bullet.shoot(player.x, player.y - 100);
+      bulletSound.play();
     }
   }
 
