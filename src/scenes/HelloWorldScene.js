@@ -54,6 +54,32 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+    this.load.spritesheet('invader7', './assets/typescript.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet('invader8', './assets/ruby.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    this.load.spritesheet('invader9', './assets/swift.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    this.load.spritesheet('invader10', './assets/csharp.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    // this.load.image('invader0', './assets/html.png');
+    // this.load.image('invader1', './assets/css.png');
+    // this.load.image('invader2', './assets/javascript.png');
+    // this.load.image('invader3', './assets/java.png');
+    // this.load.image('invader4', './assets/python.png');
+    // this.load.image('invader5', './assets/php.png');
+    // this.load.image('invader6', './assets/kotlin.png');
 
     this.load.image('bg', './assets/big-bg.png');
     this.load.image(
@@ -151,7 +177,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     scoreString = 'Score: ';
     scoreText = this.add.text(10, 10, scoreString + score, {
       fontSize: '16px',
-      fontFamily: '"Press Start 2P"',
+      //fontFamily: '"Press Start 2P"',
     });
   }
 
@@ -174,9 +200,9 @@ export default class HelloWorldScene extends Phaser.Scene {
         var alien = aliens.create(
           x * 48,
           y * 50,
-          `invader${Math.floor(Math.random() * 7)}`
+          `invader${Math.floor(Math.random() * 10)}`
         );
-        alien.setOrigin(-3, -3);
+        alien.setOrigin(-3, -2.5);
       }
     }
 
