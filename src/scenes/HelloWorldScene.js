@@ -18,7 +18,6 @@ var score = 0;
 var scoreStringOnScreen = '';
 var livesLeft = 3;
 var lifeStringOnScreen = '';
-var bomb;
 var bombInterval;
 //---START GAME OVER SCENE---//
 
