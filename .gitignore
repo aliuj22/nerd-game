@@ -8,3 +8,4 @@ thumbs.db
 *.css.map
 .vscode/*
 public/assets/.DS_Store
+public/.DS_Store

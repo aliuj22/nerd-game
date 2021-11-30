@@ -1,7 +1,6 @@
 import 'phaser';
 
 export default class Bomb extends Phaser.Physics.Arcade.Sprite {
-
   constructor(scene) {
     super(scene, 300, 300, 'bomb');
     this.play('bomb');
@@ -12,10 +11,9 @@ export default class Bomb extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true);
     this.body.onWorldBounds = true;
     this.setVelocityY(300);
-    
   }
 
   deactivate() {
-    this.disableBody (true, true);
+    this.disableBody(true, true);
   }
 }

@@ -41,7 +41,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.image('bomb', './assets/laser-blue-3.png');
+    this.load.image('bomb', './assets/bomb.png');
 
     this.load.image('bg', './assets/big-bg.png');
     this.load.image(
@@ -97,8 +97,8 @@ export default class HelloWorldScene extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
 
+    //-------CREATING BOMB GROUP------//
     this.bomb = this.physics.add.group({
-      //the maximum number of bomb. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
       maxSize: 1,
       classType: Bomb,
       //Since the bomb needs to update its position runChildUpdate must be true.
