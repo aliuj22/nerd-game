@@ -41,7 +41,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.image('bomb', './assets/laser-blue-3.png');
+    this.load.image('bomb', './assets/laser-red-1.png');
 
     this.load.image('bg', './assets/big-bg.png');
     this.load.image(
@@ -49,7 +49,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       `./assets/${Keys[this.characterIndex]}128.png`
     );
 
-    this.load.image('bullet', './assets/laser-red-2.png');
+    this.load.image('bullet', './assets/laser-blue-3.png');
     this.load.spritesheet('explosion', './assets/explosion-2.png', {
       frameWidth: 64,
       frameHeight: 64,
