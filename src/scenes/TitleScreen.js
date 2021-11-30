@@ -20,8 +20,8 @@ export default class TitleScreen extends Phaser.Scene {
     super('title-screen');
   }
   preload() {
-    //  const fonts = new WebFontFile(this.load, "Press Start 2P");
-    //  this.load.addFile(fonts);
+    const fonts = new WebFontFile(this.load, 'Press Start 2P');
+    this.load.addFile(fonts);
 
     this.load.image('bg', './assets/big-bg.png');
 
@@ -36,7 +36,7 @@ export default class TitleScreen extends Phaser.Scene {
 
     const title = this.add.text(400, 100, 'Nerd Invaders', {
       fontSize: '38px',
-      //fontFamily: '"Press Start 2P"',
+      fontFamily: '"Press Start 2P"',
     });
     title.setOrigin(0.5, 0.5);
 
@@ -64,14 +64,14 @@ export default class TitleScreen extends Phaser.Scene {
     this.add
       .text(400, 500, '⬅️ ➡️ to select the character', {
         fontSize: '20px',
-        //fontFamily: '"Press Start 2P"',
+        fontFamily: '"Press Start 2P"',
       })
       .setOrigin(0.5);
 
     this.add
       .text(400, 530, 'then press space to start', {
         fontSize: '20px',
-        //fontFamily: '"Press Start 2P"',
+        fontFamily: '"Press Start 2P"',
       })
       .setOrigin(0.5);
 

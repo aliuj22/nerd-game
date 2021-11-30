@@ -102,6 +102,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     player.setCollideWorldBounds(true);
     player.x = 400;
     player.y = 500;
+    player.setBodySize(80, 80);
     console.log('init is ', this.data);
 
     this.physics.add.existing(player);
@@ -177,7 +178,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     scoreString = 'Score: ';
     scoreText = this.add.text(10, 10, scoreString + score, {
       fontSize: '16px',
-      //fontFamily: '"Press Start 2P"',
+      fontFamily: '"Press Start 2P"',
     });
   }
 
