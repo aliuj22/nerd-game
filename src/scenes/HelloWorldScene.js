@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import Bullet from '../Bullet';
 import Bomb from '../bomb';
+// import highScore from './highscore';
+
 //import TitleScreen from './TitleScreen';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
@@ -20,6 +22,11 @@ var livesLeft = 3;
 var lifeStringOnScreen = '';
 var bomb;
 var bombInterval;
+// var localStorageName = "new";
+// var highScore;
+// let element;
+// let pointer;
+// var name;
 //---START GAME OVER SCENE---//
 
 export default class HelloWorldScene extends Phaser.Scene {
@@ -33,6 +40,12 @@ export default class HelloWorldScene extends Phaser.Scene {
     if (data.characterIndex == null) {
       this.characterIndex = 1;
     }
+
+
+    // checks if any highscore is SVGAnimatedEnumeration, otherwise highscore  = 0
+    // highScore = localStorage.getItem(localStorageName) == null ? 0:
+
+    // localStorage.getItem(localStorageName);
   }
 
   preload() {
@@ -57,6 +70,7 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   create() {
+
     //---GAME WIDTH---//
     width = this.physics.world.bounds.width;
 
@@ -171,6 +185,7 @@ export default class HelloWorldScene extends Phaser.Scene {
         bombCollide.destroy();
         if (livesLeft === 0) {
           this.scene.start('game-over', [score, scoreStringOnScreen]);
+          
         }
       }.bind(this)
     );
@@ -185,6 +200,7 @@ export default class HelloWorldScene extends Phaser.Scene {
         fontSize: '16px',
         fontFamily: '"Press Start 2P"',
       }
+      
     );
 
     //--------SHOWING AMOUNT OF LIFE ON THE SCREEN------//
@@ -213,6 +229,8 @@ export default class HelloWorldScene extends Phaser.Scene {
     aliens.x = 100;
     aliens.y = 50;
   }
+
+
 
   update() {
     //ANIMATION FOR EXPLOSIONS
@@ -276,6 +294,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       // bomb.setVelocityY(Phaser.Math.Between(-200, 200), 30);
     }
   }
+  
   onWorldbounds(body) {
     const isBullet = this.bullets.contains(body.gameObject);
     if (isBullet) {
@@ -288,6 +307,8 @@ export default class HelloWorldScene extends Phaser.Scene {
       body.gameObject.destroy();
     }
   }
+
+  
 
   checkIfAllEnemiesDead() {
     if (aliens.countActive(true) === 0) {
@@ -313,6 +334,8 @@ export default class HelloWorldScene extends Phaser.Scene {
       );
     }
   }
+
+ 
 }
 
 export { score, scoreStringOnScreen };

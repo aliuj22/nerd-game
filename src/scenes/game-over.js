@@ -41,6 +41,11 @@ export default class GameOverScene extends Phaser.Scene {
         fontFamily: '"Press Start 2P"',
       })
       .setOrigin(0.5);
+      this.add.text(280, 300, 'EnterName:',{
+        fontSize: '20px',
+        fontFamily: '"Press Start 2P"',
+      })
+      
 
     this.input.keyboard.once('keydown-ENTER', () => {
       console.log('enter down');
