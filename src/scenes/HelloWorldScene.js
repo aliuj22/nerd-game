@@ -2,27 +2,21 @@ import Phaser from 'phaser';
 
 import Bullet from '../Bullet';
 import Bomb from '../bomb';
-//import TitleScreen from './TitleScreen';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
-let player, playerControls, fireButton, bulletSound;
-//let enemy, enemy2, enemy3, spaceSound, bg;
-let aliens;
+let player, playerControls, fireButton, bulletSound, aliens, timer;
 var explosion,
   sky,
   addScoreTextToTheScreen,
   addLifeTextToTheScreen,
   width,
-  height,
   spaceSound,
   bombSound;
-var timer, timer2;
 var score = 0;
 var scoreStringOnScreen = '';
 var livesLeft = 3;
 var lifeStringOnScreen = '';
 var bombInterval;
-//---START GAME OVER SCENE---//
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -111,9 +105,6 @@ export default class HelloWorldScene extends Phaser.Scene {
     }
     //---GAME WIDTH---//
     width = this.physics.world.bounds.width;
-
-    //---GAME HEIGHT---//
-    height = this.physics.world.bounds.height;
 
     //----CREATING BACKGORUND----//
     sky = this.add.tileSprite(500, 100, 1024, 1024, 'bg');
@@ -213,7 +204,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     this.physics.add.collider(
       this.bullets,
       aliens,
-      function col(bulletCollide, enemyCollide) {
+      function (bulletCollide, enemyCollide) {
         score += 10;
         addScoreTextToTheScreen.text = scoreStringOnScreen + score;
 
@@ -224,6 +215,7 @@ export default class HelloWorldScene extends Phaser.Scene {
           bulletCollide.y,
           'explosion'
         );
+        bombSound.play();
 
         explosion.play({ key: 'explosion', hideOnComplete: true }, false);
         explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
@@ -245,6 +237,16 @@ export default class HelloWorldScene extends Phaser.Scene {
         if (livesLeft === 0) {
           this.scene.start('game-over', [score, scoreStringOnScreen]);
         }
+      }.bind(this)
+    );
+
+    //------BULLET/ BOMB COLLISION HADLER------//
+    this.physics.add.collider(
+      this.bomb,
+      this.bullets,
+      function (bombCollide, bulletCollide) {
+        bombCollide.destroy();
+        bulletCollide.destroy();
       }.bind(this)
     );
 
@@ -338,7 +340,7 @@ export default class HelloWorldScene extends Phaser.Scene {
   fireBullet() {
     const bullet = this.bullets.get();
     if (bullet) {
-      bullet.shoot(player.x, player.y - 100);
+      bullet.shoot(player.x, player.y - 80);
       bulletSound.play();
     }
   }
