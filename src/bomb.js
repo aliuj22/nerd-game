@@ -13,7 +13,7 @@ export default class Bomb extends Phaser.Physics.Arcade.Sprite {
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
-    this.setVelocityY(random(200, 800));
+    this.setVelocityY(random(150, 500));
   }
 
   deactivate() {
