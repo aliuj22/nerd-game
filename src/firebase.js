@@ -37,7 +37,7 @@ export const getFromFirebase = async () => {
   const q = query(
     collection(db, 'highscore'),
     orderBy('score', 'desc'),
-    limit(5)
+    limit(9)
   ); //limit how many scores to take
   let highscore = [];
   const highscoreRaw = await getDocs(q);

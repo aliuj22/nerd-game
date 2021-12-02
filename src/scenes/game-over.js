@@ -4,7 +4,7 @@ import WebFontFile from './WebFontFile';
 
 import { score, scoreStringOnScreen } from './HelloWorldScene';
 
-import { storeInFirebase, getFromFirebase } from '../firebase';
+import { storeInFirebase } from '../firebase';
 
 var sky, username;
 let highScore;
@@ -31,7 +31,7 @@ export default class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(400, 130, 'Press Enter To Try Again', {
+      .text(400, 500, 'Press Enter', {
         fontSize: '20px',
         fontFamily: '"Press Start 2P"',
       })
@@ -45,14 +45,10 @@ export default class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.input.keyboard.once('keydown-ENTER', async () => {
-      console.log('enter down');
       storeInFirebase(username, score);
-      let highScore = await getFromFirebase();
-      highScore.map((user, index) => {
-        this.add.text(400, 400 + index * 10, user.username + user.score);
-      });
+      console.log('enter down');
       // start title screen scene
-      // this.scene.start('title-screen');
+      this.scene.start('Highscore');
     });
 
     this.add

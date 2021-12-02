@@ -7,6 +7,10 @@ import HelloWorldScene from './scenes/HelloWorldScene';
 
 import GameOverScene from './scenes/game-over.js';
 
+import Highscore from './scenes/Highscore';
+
+import InputPanel from './scenes/InputPanel';
+
 const config = {
   type: Phaser.AUTO,
   width: 800,
@@ -18,7 +22,7 @@ const config = {
       // debug: true,
     },
   },
-  scene: [TitleScreen, HelloWorldScene, GameOverScene],
+  scene: [TitleScreen, HelloWorldScene, GameOverScene, Highscore, InputPanel],
   render: {
     pixelArt: true,
   },
