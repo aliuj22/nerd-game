@@ -2,9 +2,10 @@ import Phaser from 'phaser';
 
 import WebFontFile from './WebFontFile';
 
-import { score, scoreStringOnScreen } from './HelloWorldScene';
-
+import {score, scoreStringOnScreen } from './HelloWorldScene';
 var sky;
+
+
 
 // import HelloWorldScene from "./HelloWorldScene";
 
@@ -41,6 +42,12 @@ export default class GameOverScene extends Phaser.Scene {
         fontFamily: '"Press Start 2P"',
       })
       .setOrigin(0.5);
+
+      
+      // localStorage.score = Number(localStorage.score);
+      // localStorage.getItem("playerName");
+      // localStorage.key = (localStorage.name);
+      //  console.log(localStorage.score);
 
     this.input.keyboard.once('keydown-ENTER', () => {
       console.log('enter down');

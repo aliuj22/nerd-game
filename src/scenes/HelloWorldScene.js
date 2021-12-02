@@ -4,10 +4,13 @@ import Bullet from '../Bullet';
 import Bomb from '../bomb';
 //import TitleScreen from './TitleScreen';
 
+
+
 const Keys = ['Julia', 'Alex', 'Redbull'];
 let player, playerControls, fireButton, bulletSound;
 //let enemy, enemy2, enemy3, spaceSound, bg;
 let aliens;
+// var explode;
 var explosion,
   sky,
   addScoreTextToTheScreen,
@@ -108,6 +111,12 @@ export default class HelloWorldScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+
+    // this.load.spritesheet('P-explode', './assets/explode.png', {
+    //   frameWidth: 64,
+    //   frameHeight: 64,
+    // });
+
   }
 
   create() {
@@ -201,6 +210,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       aliens,
       function (bulletCollide, enemyCollide) {
         score += 10;
+       
         addScoreTextToTheScreen.text = scoreStringOnScreen + score;
 
         // livesLeft -= 1;
@@ -230,14 +240,26 @@ export default class HelloWorldScene extends Phaser.Scene {
       this.bomb,
       player,
       function (playerCollide, bombCollide) {
+        
         livesLeft -= 1;
         addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
-
         bombSound.play();
         bombCollide.destroy();
-        if (livesLeft === 0) {
-          this.scene.start('game-over', [score, scoreStringOnScreen]);
-        }
+        explosion = this.add.sprite(
+          bombCollide.x,
+          bombCollide.y,
+          'explosion'
+        );
+
+        explosion.play({ key: 'explosion', hideOnComplete: true }, false);
+        explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+          explosion.destroy();
+        });
+         
+                
+        if (livesLeft === 0) {    
+           this.scene.start('game-over', [score, scoreStringOnScreen]);
+          }
       }.bind(this)
     );
 
@@ -285,6 +307,16 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
 
   update() {
+    //ANIMATION FOR P-EXPLODE
+    // this.anims.create({
+    //   key: 'explosion',
+    //   frameRate: 9,
+    //   frames: this.anims.generateFrameNumbers('explosion', {
+    //     start: 0,
+    //     end: 6,
+    //   }),
+    //   repeat: 0,
+    // });
     //ANIMATION FOR EXPLOSIONS
     this.anims.create({
       key: 'explosion',
@@ -298,7 +330,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 
     if (bombInterval < 100) {
       bombInterval++;
-      console.log(bombInterval);
+      // console.log(bombInterval);
     } else {
       bombInterval = 0;
       this.throwBomb();
