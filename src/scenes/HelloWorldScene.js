@@ -2,18 +2,14 @@ import Phaser from 'phaser';
 
 import Bullet from '../Bullet';
 import Bomb from '../bomb';
-//import TitleScreen from './TitleScreen';
 
 const Keys = ['Julia', 'Alex', 'Redbull'];
-let player, playerControls, fireButton, bulletSound;
-//let enemy, enemy2, enemy3, spaceSound, bg;
-let aliens;
+let player, playerControls, fireButton, bulletSound, aliens, timer;
 var explosion,
   sky,
   addScoreTextToTheScreen,
   addLifeTextToTheScreen,
   width,
-  height,
   spaceSound,
   bombSound;
 var score = 0;
@@ -21,7 +17,6 @@ var scoreStringOnScreen = '';
 var livesLeft = 3;
 var lifeStringOnScreen = '';
 var bombInterval;
-//---START GAME OVER SCENE---//
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -89,21 +84,13 @@ export default class HelloWorldScene extends Phaser.Scene {
     });
     this.load.image('bomb', './assets/404-error.png');
 
-    // this.load.image('invader0', './assets/html.png');
-    // this.load.image('invader1', './assets/css.png');
-    // this.load.image('invader2', './assets/javascript.png');
-    // this.load.image('invader3', './assets/java.png');
-    // this.load.image('invader4', './assets/python.png');
-    // this.load.image('invader5', './assets/php.png');
-    // this.load.image('invader6', './assets/kotlin.png');
-
-    this.load.image('bg', './assets/test.png');
+    this.load.image('bgr', './assets/bg2.png');
     this.load.image(
       `${Keys[this.characterIndex]}`,
       `./assets/${Keys[this.characterIndex]}128.png`
     );
 
-    this.load.image('bullet', './assets/laser-red-2.png');
+    this.load.image('bullet', './assets/laser-blue-1.png');
     this.load.spritesheet('explosion', './assets/explosion-2.png', {
       frameWidth: 64,
       frameHeight: 64,
@@ -119,11 +106,8 @@ export default class HelloWorldScene extends Phaser.Scene {
     //---GAME WIDTH---//
     width = this.physics.world.bounds.width;
 
-    //---GAME HEIGHT---//
-    height = this.physics.world.bounds.height;
-
     //----CREATING BACKGORUND----//
-    sky = this.add.tileSprite(500, 100, 1024, 1024, 'bg');
+    sky = this.add.tileSprite(500, 100, 1024, 1024, 'bgr');
 
     //----ADDING PLAYERS CHOSEN CHARACTER----//
     player = this.physics.add.sprite(100, 100, Keys[this.characterIndex]);
@@ -145,6 +129,12 @@ export default class HelloWorldScene extends Phaser.Scene {
       runChildUpdate: true,
     });
 
+    this.bullets2 = this.physics.add.group({
+      classType: Bullet,
+      maxSize: 1,
+      runChildUpdate: true,
+    });
+
     this.physics.world.on('worldbounds', this.onWorldbounds, this);
 
     //---SPECIFYING BUTTON FOR FIRING---//
@@ -159,16 +149,37 @@ export default class HelloWorldScene extends Phaser.Scene {
       //Since the bomb needs to update its position runChildUpdate must be true.
       runChildUpdate: true,
     });
+    //----TIMER THAT INCREASES BOMB MAX SIZE AFTER SPECIFIED TIME----/
+    timer = this.time.addEvent({
+      delay: 15000, // ms
+      callback: increaseMaxSize,
+      //args: [],
+      callbackScope: this,
+      loop: true,
+      paused: false,
+    });
+    //-----FUNCTION INCREASING BOMB MAX SIZE-----/
+    function increaseMaxSize() {
+      this.bomb.maxSize += 1;
+      console.log(this.bomb.maxSize);
+      if (this.bomb.maxSize === 5) {
+        this.bomb.maxSize -= 3;
+      }
+    }
 
     this.physics.world.on('worldbounds', this.onWorldbounds, this);
 
+    //---CREATING BACKGROUND SOUND----//
     spaceSound = this.sound.add('space', { volume: 0.2 });
     spaceSound.play();
 
+    //----CREATING BULLET SOUND----//
     bulletSound = this.sound.add('bulletSound', { volume: 0.2 });
 
+    //----CREATING BOMB HITTING PLAYER SOUND----//
     bombSound = this.sound.add('bombSound', { volume: 0.2 });
 
+    //-----CREATING ALIENS GROUP----//
     aliens = this.physics.add.group();
     this.createAliens();
 
@@ -203,9 +214,6 @@ export default class HelloWorldScene extends Phaser.Scene {
         score += 10;
         addScoreTextToTheScreen.text = scoreStringOnScreen + score;
 
-        // livesLeft -= 1;
-        // addLifeTextToTheScreen.text = lifeStringOnScreen + livesLeft;
-
         enemyCollide.destroy();
         bulletCollide.destroy();
         explosion = this.add.sprite(
@@ -213,15 +221,32 @@ export default class HelloWorldScene extends Phaser.Scene {
           bulletCollide.y,
           'explosion'
         );
+        bombSound.play();
 
         explosion.play({ key: 'explosion', hideOnComplete: true }, false);
         explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
           explosion.destroy();
         });
+      }.bind(this)
+    );
 
-        // if (livesLeft === 0) {
-        //   this.scene.start('game-over', [score, scoreStringOnScreen]);
-        // }
+    this.physics.add.collider(
+      this.bullets2,
+      aliens,
+      function (bulletCollide, enemyCollide) {
+        enemyCollide.destroy();
+        bulletCollide.destroy();
+        explosion = this.add.sprite(
+          bulletCollide.x,
+          bulletCollide.y,
+          'explosion'
+        );
+        bombSound.play();
+
+        explosion.play({ key: 'explosion', hideOnComplete: true }, false);
+        explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+          explosion.destroy();
+        });
       }.bind(this)
     );
 
@@ -238,6 +263,25 @@ export default class HelloWorldScene extends Phaser.Scene {
         if (livesLeft === 0) {
           this.scene.start('game-over', [score, scoreStringOnScreen]);
         }
+      }.bind(this)
+    );
+
+    //------BULLET/ BOMB COLLISION HADLER------//
+    this.physics.add.collider(
+      this.bomb,
+      this.bullets,
+      function (bombCollide, bulletCollide) {
+        bombCollide.destroy();
+        bulletCollide.destroy();
+      }.bind(this)
+    );
+
+    this.physics.add.collider(
+      this.bomb,
+      this.bullets2,
+      function (bombCollide, bulletCollide) {
+        bombCollide.destroy();
+        bulletCollide.destroy();
       }.bind(this)
     );
 
@@ -300,7 +344,7 @@ export default class HelloWorldScene extends Phaser.Scene {
       bombInterval++;
       console.log(bombInterval);
     } else {
-      bombInterval = 0;
+      bombInterval <= 4;
       this.throwBomb();
     }
 
@@ -311,9 +355,10 @@ export default class HelloWorldScene extends Phaser.Scene {
     this.movePlayer();
 
     //FIRING BULLETS ON SPACE DOWN
-    if (fireButton.isDown) {
+    if (fireButton.isDown && livesLeft < 3) {
+      this.fireTwoBullets();
+    } else if (fireButton.isDown) {
       this.fireBullet();
-      // this.throwBomb();
     }
 
     //CHECKS IF ALL ENEMIES FROM A WAVE ARE DEAD
@@ -330,9 +375,22 @@ export default class HelloWorldScene extends Phaser.Scene {
 
   fireBullet() {
     const bullet = this.bullets.get();
+
     if (bullet) {
-      bullet.shoot(player.x, player.y - 100);
+      bullet.shoot(player.x, player.y - 80);
       bulletSound.play();
+    }
+  }
+
+  fireTwoBullets() {
+    const bullet = this.bullets.get();
+    const bullet2 = this.bullets2.get();
+    if (bullet) {
+      bullet.shoot(player.x + 25, player.y - 80);
+      bulletSound.play();
+    }
+    if (bullet2) {
+      bullet2.shoot(player.x - 25, player.y - 80);
     }
   }
 
@@ -350,7 +408,13 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
   onWorldbounds(body) {
     const isBullet = this.bullets.contains(body.gameObject);
+    const isBullet2 = this.bullets2.contains(body.gameObject);
+
     if (isBullet) {
+      //body.gameObject.deactivate();
+      body.gameObject.destroy();
+    }
+    if (isBullet2) {
       //body.gameObject.deactivate();
       body.gameObject.destroy();
     }
@@ -383,6 +447,7 @@ export default class HelloWorldScene extends Phaser.Scene {
           };
         })(this)
       );
+      this.bomb.maxSize = 2;
     }
   }
 }

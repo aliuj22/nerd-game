@@ -11,7 +11,8 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     // @ts-ignore
     this.body.onWorldBounds = true;
     this.enableBody(true, x, y, true, true);
-    this.setVelocityY(-300);
+    this.setVelocityY(-350);
+    // this.setGravityX(500);
   }
 
   deactivate() {
