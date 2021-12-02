@@ -29,7 +29,7 @@ export default class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(400, 130, 'Press Enter To Try Again', {
+      .text(400, 350, 'Press Enter', {
         fontSize: '20px',
         fontFamily: '"Press Start 2P"',
       })
@@ -45,36 +45,36 @@ export default class GameOverScene extends Phaser.Scene {
     this.input.keyboard.once('keydown-ENTER', () => {
       console.log('enter down');
       // start title screen scene
-      this.scene.start('title-screen');
+      this.scene.start('Highscore');
     });
 
-    this.add
-      .text(400, 300, 'Enter your name:', {
-        font: '32px Courier',
-        fontFamily: '"Press Start 2P"',
-        fill: '#ffffff',
-      })
-      .setOrigin(0.5);
+    // this.add
+    //   .text(400, 300, 'Enter your name:', {
+    //     font: '32px Courier',
+    //     fontFamily: '"Press Start 2P"',
+    //     fill: '#ffffff',
+    //   })
+    //   .setOrigin(0.5);
 
-    var textEntry = this.add
-      .text(400, 350, '', {
-        font: '32px Courier',
-        fontFamily: '"Press Start 2P"',
-        fill: '#ffff00',
-      })
-      .setOrigin(0.5);
+    // var textEntry = this.add
+    //   .text(400, 350, '', {
+    //     font: '32px Courier',
+    //     fontFamily: '"Press Start 2P"',
+    //     fill: '#ffff00',
+    //   })
+    //   .setOrigin(0.5);
 
-    this.input.keyboard.on('keydown', function (event) {
-      if (event.keyCode === 8 && textEntry.text.length > 0) {
-        textEntry.text = textEntry.text.substr(0, textEntry.text.length - 1);
-      } else if (
-        event.keyCode === 32 ||
-        (event.keyCode >= 48 && event.keyCode < 90)
-      ) {
-        textEntry.text += event.key;
-      }
-      console.log(textEntry.text);
-    });
+    // this.input.keyboard.on('keydown', function (event) {
+    //   if (event.keyCode === 8 && textEntry.text.length > 0) {
+    //     textEntry.text = textEntry.text.substr(0, textEntry.text.length - 1);
+    //   } else if (
+    //     event.keyCode === 32 ||
+    //     (event.keyCode >= 48 && event.keyCode < 90)
+    //   ) {
+    //     textEntry.text += event.key;
+    //   }
+    //   console.log(textEntry.text);
+    // });
   }
 
   update() {
