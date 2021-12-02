@@ -4,8 +4,10 @@ import WebFontFile from './WebFontFile';
 
 import { score, scoreStringOnScreen } from './HelloWorldScene';
 
-var sky;
+// import { storeInFirebase, getFromFirebase } from '../firebase';
 
+var sky, username;
+let highScore;
 // import HelloWorldScene from "./HelloWorldScene";
 
 export default class GameOverScene extends Phaser.Scene {
@@ -44,8 +46,13 @@ export default class GameOverScene extends Phaser.Scene {
 
     this.input.keyboard.once('keydown-ENTER', () => {
       console.log('enter down');
+      // storeInFirebase(username, score);
+      // highScore = getFromFirebase();
+      // highScore.map((user) => {
+      //   this.add.text(400, 400, user.username + user.score);
+      // });
       // start title screen scene
-      this.scene.start('title-screen');
+      // this.scene.start('title-screen');
     });
 
     this.add
@@ -74,6 +81,7 @@ export default class GameOverScene extends Phaser.Scene {
         textEntry.text += event.key;
       }
       console.log(textEntry.text);
+      // username = textEntry.text;
     });
   }
 
