@@ -84,13 +84,13 @@ export default class HelloWorldScene extends Phaser.Scene {
     });
     this.load.image('bomb', './assets/404-error.png');
 
-    this.load.image('bg', './assets/test.png');
+    this.load.image('bgr', './assets/bg2.png');
     this.load.image(
       `${Keys[this.characterIndex]}`,
       `./assets/${Keys[this.characterIndex]}128.png`
     );
 
-    this.load.image('bullet', './assets/laser-red-2.png');
+    this.load.image('bullet', './assets/laser-blue-1.png');
     this.load.spritesheet('explosion', './assets/explosion-2.png', {
       frameWidth: 64,
       frameHeight: 64,
@@ -107,7 +107,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     width = this.physics.world.bounds.width;
 
     //----CREATING BACKGORUND----//
-    sky = this.add.tileSprite(500, 100, 1024, 1024, 'bg');
+    sky = this.add.tileSprite(500, 100, 1024, 1024, 'bgr');
 
     //----ADDING PLAYERS CHOSEN CHARACTER----//
     player = this.physics.add.sprite(100, 100, Keys[this.characterIndex]);
@@ -123,9 +123,15 @@ export default class HelloWorldScene extends Phaser.Scene {
     //---ADDING PLAYERS BULLET--- //
     this.bullets = this.physics.add.group({
       //the maximum number of bullets. 50 is fairly small and there will be pauses while firing waiting for fired bullets to recycle back into the available pool.
-      maxSize: 2,
+      maxSize: 1,
       classType: Bullet,
       //Since the bullet needs to update its position runChildUpdate must be true.
+      runChildUpdate: true,
+    });
+
+    this.bullets2 = this.physics.add.group({
+      classType: Bullet,
+      maxSize: 1,
       runChildUpdate: true,
     });
 
@@ -224,6 +230,26 @@ export default class HelloWorldScene extends Phaser.Scene {
       }.bind(this)
     );
 
+    this.physics.add.collider(
+      this.bullets2,
+      aliens,
+      function (bulletCollide, enemyCollide) {
+        enemyCollide.destroy();
+        bulletCollide.destroy();
+        explosion = this.add.sprite(
+          bulletCollide.x,
+          bulletCollide.y,
+          'explosion'
+        );
+        bombSound.play();
+
+        explosion.play({ key: 'explosion', hideOnComplete: true }, false);
+        explosion.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+          explosion.destroy();
+        });
+      }.bind(this)
+    );
+
     //---PLAYER/BOMB COLLISION HANDLER---//
     this.physics.add.collider(
       this.bomb,
@@ -244,6 +270,15 @@ export default class HelloWorldScene extends Phaser.Scene {
     this.physics.add.collider(
       this.bomb,
       this.bullets,
+      function (bombCollide, bulletCollide) {
+        bombCollide.destroy();
+        bulletCollide.destroy();
+      }.bind(this)
+    );
+
+    this.physics.add.collider(
+      this.bomb,
+      this.bullets2,
       function (bombCollide, bulletCollide) {
         bombCollide.destroy();
         bulletCollide.destroy();
@@ -320,9 +355,10 @@ export default class HelloWorldScene extends Phaser.Scene {
     this.movePlayer();
 
     //FIRING BULLETS ON SPACE DOWN
-    if (fireButton.isDown) {
+    if (fireButton.isDown && livesLeft < 3) {
+      this.fireTwoBullets();
+    } else if (fireButton.isDown) {
       this.fireBullet();
-      // this.throwBomb();
     }
 
     //CHECKS IF ALL ENEMIES FROM A WAVE ARE DEAD
@@ -339,9 +375,22 @@ export default class HelloWorldScene extends Phaser.Scene {
 
   fireBullet() {
     const bullet = this.bullets.get();
+
     if (bullet) {
       bullet.shoot(player.x, player.y - 80);
       bulletSound.play();
+    }
+  }
+
+  fireTwoBullets() {
+    const bullet = this.bullets.get();
+    const bullet2 = this.bullets2.get();
+    if (bullet) {
+      bullet.shoot(player.x + 25, player.y - 80);
+      bulletSound.play();
+    }
+    if (bullet2) {
+      bullet2.shoot(player.x - 25, player.y - 80);
     }
   }
 
@@ -359,7 +408,13 @@ export default class HelloWorldScene extends Phaser.Scene {
   }
   onWorldbounds(body) {
     const isBullet = this.bullets.contains(body.gameObject);
+    const isBullet2 = this.bullets2.contains(body.gameObject);
+
     if (isBullet) {
+      //body.gameObject.deactivate();
+      body.gameObject.destroy();
+    }
+    if (isBullet2) {
       //body.gameObject.deactivate();
       body.gameObject.destroy();
     }
@@ -377,7 +432,6 @@ export default class HelloWorldScene extends Phaser.Scene {
         targets: aliens,
         duration: 2000,
       });
-      this.bomb.maxSize = 2;
       Phaser.Actions.Call(
         aliens.getChildren(),
         (function movingAliens(context) {
@@ -393,6 +447,7 @@ export default class HelloWorldScene extends Phaser.Scene {
           };
         })(this)
       );
+      this.bomb.maxSize = 2;
     }
   }
 }

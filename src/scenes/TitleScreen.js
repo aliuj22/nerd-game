@@ -23,7 +23,7 @@ export default class TitleScreen extends Phaser.Scene {
     const fonts = new WebFontFile(this.load, 'Press Start 2P');
     this.load.addFile(fonts);
 
-    this.load.image('bg', './assets/test.png');
+    this.load.image('bg', './assets/big-bg.png');
 
     this.load.image('Alex_key', './assets/Alex128.png');
     this.load.image('Julia_key', './assets/Julia128.png');
