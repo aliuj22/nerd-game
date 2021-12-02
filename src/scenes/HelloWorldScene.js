@@ -114,7 +114,7 @@ export default class HelloWorldScene extends Phaser.Scene {
     player.setCollideWorldBounds(true);
     player.x = 400;
     player.y = 500;
-    player.setBodySize(80, 80);
+    player.setBodySize(50, 50);
     player.setPushable(false);
 
     this.physics.add.existing(player);

@@ -9,8 +9,6 @@ import GameOverScene from './scenes/game-over.js';
 
 import Highscore from './scenes/Highscore';
 
-import InputPanel from './scenes/InputPanel';
-
 const config = {
   type: Phaser.AUTO,
   width: 800,
@@ -19,10 +17,10 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: false,
-      // debug: true,
+      debug: true,
     },
   },
-  scene: [TitleScreen, HelloWorldScene, GameOverScene, Highscore, InputPanel],
+  scene: [TitleScreen, HelloWorldScene, GameOverScene, Highscore],
   render: {
     pixelArt: true,
   },

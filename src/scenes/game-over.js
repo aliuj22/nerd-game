@@ -24,14 +24,14 @@ export default class GameOverScene extends Phaser.Scene {
     sky = this.add.tileSprite(500, 100, 1024, 1024, 'bgr');
 
     this.add
-      .text(400, 80, 'Game Over!', {
+      .text(400, 80, 'GAME OVER!', {
         fontSize: '50px',
         fontFamily: '"Press Start 2P"',
       })
       .setOrigin(0.5);
 
     this.add
-      .text(400, 500, 'Press Enter', {
+      .text(400, 500, 'PRESS ENTER', {
         fontSize: '20px',
         fontFamily: '"Press Start 2P"',
       })
@@ -52,18 +52,16 @@ export default class GameOverScene extends Phaser.Scene {
     });
 
     this.add
-      .text(400, 300, 'Enter your name:', {
-        font: '32px Courier',
+      .text(400, 300, 'ENTER YOUR NAME:', {
+        fontSize: '30px',
         fontFamily: '"Press Start 2P"',
-        fill: '#ffffff',
       })
       .setOrigin(0.5);
 
     var textEntry = this.add
       .text(400, 350, '', {
-        font: '32px Courier',
+        fontSize: '30px',
         fontFamily: '"Press Start 2P"',
-        fill: '#ffff00',
       })
       .setOrigin(0.5);
 
